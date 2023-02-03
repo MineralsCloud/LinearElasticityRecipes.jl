@@ -3,6 +3,10 @@ uuid = "50aa9dc8-1b2a-43ad-8b10-c01ad3d79464"
 authors = ["singularitti <singularitti@outlook.com> and contributors"]
 version = "0.1.0"
 
+[deps]
+LinearElasticity = "8b390c8a-e41e-419b-b3a5-595c9a4d2b26"
+RecipesBase = "3cdcf5f2-1ef4-517c-9805-6587b60abb01"
+
 [compat]
 julia = "1"
 
