@@ -29,7 +29,7 @@ using RecipesBase
             𝛜ᵢ, 𝛔ⱼ
         end
     end
-    for (line, T) in zip((:hline, :vline), eltype.((𝛜ᵢ, 𝛔[1])))
+    for (line, T) in zip((:hline, :vline), eltype.((𝛔[1], 𝛜ᵢ)))
         @series begin
             seriestype --> line
             seriescolor --> :black
@@ -38,6 +38,9 @@ using RecipesBase
             zeros(T, 1)
         end
     end
+end
+@recipe function f(𝛜::AbstractVector{<:TensorStrain}, 𝛔::AbstractVector{<:TensorStress})
+    return EngineeringStrain.(𝛜), EngineeringStress.(𝛔)
 end
 
 end
