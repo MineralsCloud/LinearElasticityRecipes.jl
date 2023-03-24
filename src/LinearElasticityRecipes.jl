@@ -1,8 +1,15 @@
 module LinearElasticityRecipes
 
 using LinearElasticity:
-    EngineeringStrain, EngineeringStress, TensorStrain, TensorStress, isuniaxial
+    EngineeringStrain,
+    EngineeringStress,
+    TensorStrain,
+    TensorStress,
+    StiffnessMatrix,
+    ComplianceMatrix,
+    isuniaxial
 using RecipesBase
+using Tensorial: SymmetricSecondOrderTensor, ⋅
 
 @recipe function f(
     𝛜::AbstractVector{<:EngineeringStrain}, 𝛔::AbstractVector{<:EngineeringStress}
@@ -41,6 +48,23 @@ using RecipesBase
 end
 @recipe function f(𝛜::AbstractVector{<:TensorStrain}, 𝛔::AbstractVector{<:TensorStress})
     return EngineeringStrain.(𝛜), EngineeringStress.(𝛔)
+end
+
+@recipe function f(s::StiffnessMatrix)
+    xguide --> "strains"
+    yguide --> "stresses"
+    framestyle --> :box
+    legend_foreground_color --> nothing
+    grid --> nothing
+    seriestype --> :scatter
+    𝛜 = map((0.001, 0.002, 0.003)) do e
+        EngineeringStrain([e, 0, 0, 0, 0, 0])
+    end
+    xlim --> (0, 0.003)
+    𝛔 = map(𝛜) do ϵ
+        EngineeringStress(s.data * ϵ.data)
+    end
+    return 𝛜, 𝛔
 end
 
 end
